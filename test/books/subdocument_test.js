@@ -18,4 +18,44 @@ describe('Subdocuments', () => {
       })
 
   })
+
+  it('can add subdocuments to an existing record', (done) => {
+    const testBook = new Book({
+      title: 'Book Title',
+      author: 'Book Author',
+      summary: 'Book Summary',
+      reviews: []
+    })
+    testBook.save()
+      .then(() => Book.findOne({ title: 'Book Title' }))
+      .then((book) => {
+        book.reviews.push({ content: 'I am a review!'})
+        return book.save()
+      })
+      .then(() => Book.findOne({ title: 'Book Title'}))
+      .then((book) => {
+        assert(book.reviews[0].content === 'I am a review!')
+        done()
+      })
+  })
+
+  it('can remove an existing subdocument', (done) => {
+    const testBook = new Book({
+      title: 'Book Title',
+      author: 'Book Author',
+      summary: 'Book Summary',
+      reviews: [{content: 'I am a review'}]
+    })
+    testBook.save()
+      .then(() => Book.findOne({ title: 'Book Title' }))
+      .then((book) => {
+        book.reviews[0].remove()
+        return book.save()
+      })
+      .then(() => Book.findOne({ title: 'Book Title'}))
+      .then((book) => {
+        assert(book.reviews.length === 0)
+        done()
+      })
+  })
 })
