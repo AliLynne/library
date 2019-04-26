@@ -122,7 +122,7 @@ describe('Updating books', () => {
     )
   })
 
-  it('update a book author using findByIdAndUpdate', (done) => {
+  it('updates a book author using findByIdAndUpdate', (done) => {
     assertAuthor(
       Book.findByIdAndUpdate(newBook._id, { author: 'Updated Author'}),
       done

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const ReviewSchema = require('./review_schema')
 const Schema = mongoose.Schema
 
 const BookSchema = new Schema({
@@ -13,7 +14,9 @@ const BookSchema = new Schema({
   summary: {
     type: String,
     required: [true, 'Book needs a summary']
-  }
+  },
+  reviewCount: Number,
+  reviews: [ReviewSchema]
 })
 
 const Book = mongoose.model('book', BookSchema)
