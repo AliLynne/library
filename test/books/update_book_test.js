@@ -8,7 +8,8 @@ describe('Updating books', () => {
     newBook = new Book({
       title: 'Test Book Title',
       author: 'Test Author',
-      summary: 'Test summary lorem ipsum blah blah babble babble yabba dabba dooo'
+      summary: 'Test summary lorem ipsum blah blah babble babble yabba dabba dooo',
+      likes: 0
     })
     newBook.save()
       .then(() => done())
@@ -134,5 +135,14 @@ describe('Updating books', () => {
       Book.findByIdAndUpdate(newBook._id, { summary: 'Updated Summary'}),
       done
     )
+  })
+
+  it('increments a books like count by one', (done) => {
+    Book.updateOne({ title: 'Test Book Title'}, { $inc: { likes: 10 } })
+      .then(() => Book.findOne({ title: 'Test Book Title'}))
+      .then((book) => {
+        assert(book.likes === 10)
+        done()
+      })
   })
 })

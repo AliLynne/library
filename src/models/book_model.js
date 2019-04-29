@@ -15,9 +15,16 @@ const BookSchema = new Schema({
     type: String,
     required: [true, 'Book needs a summary']
   },
-  reviewCount: Number,
-  reviews: [ReviewSchema]
+  reviews: [ReviewSchema],
+  likes: Number
 })
+
+BookSchema.virtual('reviewCount').get(function() {
+  return this.reviews.length
+})
+
+
+
 
 const Book = mongoose.model('book', BookSchema)
 module.exports = Book
