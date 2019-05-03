@@ -17,7 +17,12 @@ before((done) => {
 })
 
 beforeEach((done) => {
-  mongoose.connection.collections.books.drop(() => {
-    done()
+  const { users, reviews, books } = mongoose.connection.collections
+  books.drop(() => {
+    users.drop(() => {
+      reviews.drop(() => {
+        done()
+      })
+    })
   })
 })

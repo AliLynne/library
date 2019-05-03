@@ -1,22 +1,21 @@
 const mongoose = require('mongoose')
-const ReviewSchema = require('./review_schema')
 const Schema = mongoose.Schema
 
 const BookSchema = new Schema({
   title: {
-    type: String,
-    required: [true, 'Book needs a title']
+    type: String
   },
-  author: {
-    type: String,
-    required: [true, 'Book needs an author']
-  },
+  author: [{
+    type: Schema.Types.ObjectId,
+    ref: 'user'
+  }],
   summary: {
-    type: String,
-    required: [true, 'Book needs a summary']
+    type: String
   },
-  reviews: [ReviewSchema],
-  likes: Number
+  reviews: [{ 
+    type: Schema.Types.ObjectId,
+    ref: 'review'
+  }]
 })
 
 BookSchema.virtual('reviewCount').get(function() {

@@ -1,21 +1,26 @@
 const assert = require('chai').assert
 const Book = require('../../src/models/book_model')
+const User = require('../../src/models/user_model')
 
 describe('Deleting a book', () => {
-  let newBook;
+  let testBook
+  let author
 
   beforeEach((done) => {
-    newBook = new Book({ 
+    author = new User({ name: 'Test Author' })
+    testBook = new Book({ 
       title: 'Test title',
-      author: 'Test Author',
       summary: 'Test Summary'
     })
-    newBook.save()
+
+    testBook.author.push(author)
+
+    testBook.save()
       .then(() => done())
   })
   // model = newBook
   it('model instance remove', (done) => {
-    newBook.remove()
+    testBook.remove()
       .then(() => Book.findOne({ title: 'Test title'}))
       .then((user) => {
         assert(user === null, 'expected user === null')
@@ -42,7 +47,7 @@ describe('Deleting a book', () => {
   })
   it('class method findByIdAndRemove', (done) => {
     
-    Book.findByIdAndRemove(newBook._id)
+    Book.findByIdAndRemove(testBook._id)
       .then(() => Book.findOne({ title: 'Test title'}))
       .then((book) => {
         assert(book === null)
